@@ -28,8 +28,8 @@
 <details>
 <summary>Expand if this PR affects infrastructure (Terraform, Kubernetes, etc.)</summary>
 
-- [ ] Have you added the `PR plan` label?
-- [ ] After confirming the plan is correct, have you added the `PR apply` label?
+<input type="checkbox" id="pr-plan-label"> <label for="pr-plan-label">Have you added the `PR plan` label?</label><br>
+<input type="checkbox" id="pr-apply-label"> <label for="pr-apply-label">After confirming the plan is correct, have you added the `PR apply` label?</label>
 
 </details>
 
@@ -39,7 +39,7 @@
 <details>
 <summary>Expand if this PR affects a Python package (setup.py or pyproject.toml)</summary>
 
-- [ ] Have you added the `python publish` label?
-- [ ] Have you incremented the package version appropriately?
+<input type="checkbox" id="python-publish-label"> <label for="python-publish-label">Have you added the `python publish` label?</label><br>
+<input type="checkbox" id="package-version"> <label for="package-version">Have you incremented the package version appropriately?</label>
 
 </details>
