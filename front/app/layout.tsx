@@ -7,7 +7,7 @@ import Image from 'next/image'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AI Projects',
+  title: 'AI Tools',
   description: 'Personal AI projects and tools',
 }
 
@@ -22,8 +22,8 @@ export default function RootLayout({
         <nav className="bg-gray-800 p-4">
           <div className="container mx-auto flex justify-between items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <Image src="/logo.svg" alt="AI Projects Logo" width={32} height={32} />
-              <span className="text-xl font-bold">AI Projects</span>
+              <Image src="/images/logo.png" alt="AI Tools Logo" width={40} height={40} />
+              <span className="text-xl font-bold">AI Tools</span>
             </Link>
             <ul className="flex space-x-4">
               <li><Link href="/prompt-price" className="hover:text-gray-300">Prompt Price</Link></li>
