@@ -1,3 +1,9 @@
+Please go to the `Preview` tab if you want to use the modern template instead:
+
+* [Use Modern Template](?expand=1&template=modern_pr_template.md)
+
+---
+
 ### What's the focus of this PR?
 …
 
