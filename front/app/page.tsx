@@ -3,10 +3,15 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { Package2Icon } from 'lucide-react'
+import { Package2Icon, Search } from 'lucide-react'
 import Image from 'next/image'
+
+// Tool components
+import PromptPriceCalculator from '@/components/tools/PromptPriceCalculator'
+import LLMPlayground from '@/components/tools/LLMPlayground'
+import PromptSaver from '@/components/tools/PromptSaver'
 
 const tools = [
   { 
@@ -33,7 +38,7 @@ export default function Home() {
   const [selectedTool, setSelectedTool] = useState(null)
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100">
+    <div className="flex h-screen bg-gray-900 text-gray-100 bg-dotted-pattern">
       {/* Sidebar */}
       <div className="w-64 bg-gray-800 p-4">
         <div 
@@ -74,88 +79,19 @@ export default function Home() {
             <h2 className="text-3xl font-bold mb-8">Welcome to AI Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {tools.map((tool) => (
-                <div key={tool.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div 
+                  key={tool.id} 
+                  className="bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer hover:bg-gray-700 transition-colors"
+                  onClick={() => setSelectedTool(tool)}
+                >
                   <h3 className="text-2xl font-semibold mb-2">{tool.name}</h3>
-                  <p className="text-gray-300 mb-4">{tool.description}</p>
-                  <Button onClick={() => setSelectedTool(tool)}>Try it out</Button>
+                  <p className="text-gray-300">{tool.description}</p>
                 </div>
               ))}
             </div>
           </div>
         )}
       </div>
-    </div>
-  )
-}
-
-function PromptPriceCalculator() {
-  const [prompt, setPrompt] = useState('')
-  const [model, setModel] = useState('')
-  const [outputLength, setOutputLength] = useState('')
-  const [cost, setCost] = useState<number | null>(null)
-
-  const handleCalculate = async () => {
-    try {
-      const response = await fetch('/api/calculate-cost', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt, model, outputLength: parseInt(outputLength) }),
-      })
-      const data = await response.json()
-      setCost(data.cost)
-    } catch (error) {
-      console.error('Error calculating cost:', error)
-    }
-  }
-
-  return (
-    <div className="space-y-4">
-      <Textarea
-        placeholder="Enter your prompt here"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        className="min-h-[100px]"
-      />
-      <Select value={model} onValueChange={setModel}>
-        <SelectTrigger>
-          <SelectValue placeholder="Select a model" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="gpt4">GPT-4</SelectItem>
-          <SelectItem value="gemini-1.5-flash">Gemini 1.5 Flash</SelectItem>
-          <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
-        </SelectContent>
-      </Select>
-      <Input
-        type="number"
-        placeholder="Estimated output length (words)"
-        value={outputLength}
-        onChange={(e) => setOutputLength(e.target.value)}
-      />
-      <Button onClick={handleCalculate}>Calculate Cost</Button>
-      {cost !== null && (
-        <div className="mt-4">
-          <p className="text-xl">Estimated Cost: ${cost.toFixed(4)}</p>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function LLMPlayground() {
-  return (
-    <div className="space-y-4">
-      <p>LLM Playground component to be implemented.</p>
-    </div>
-  )
-}
-
-function PromptSaver() {
-  return (
-    <div className="space-y-4">
-      <p>Prompt Saver component to be implemented.</p>
     </div>
   )
 }
