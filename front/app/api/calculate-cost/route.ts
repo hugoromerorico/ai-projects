@@ -2,28 +2,46 @@ export const runtime = 'edge';
 
 import { NextResponse } from 'next/server'
 
-export async function POST(request: Request) {
-  const { prompt, model, outputLength } = await request.json()
+const modelPrices = {
+  'Sonnet-1': 0.0001,
+  'Sonnet-2': 0.00015,
+  'Sonnet-3': 0.0002,
+  'Gemini-1': 0.00012,
+  'Gemini-2': 0.00018,
+  'Gemini-3': 0.00025,
+  'GPT-3.5': 0.0002,
+  'GPT-4': 0.0003,
+  'GPT-4 Turbo': 0.00035,
+  'DALL-E 3': 0.0004
+}
 
-  // This is a placeholder calculation. Replace with your actual pricing logic.
-  let costPerWord = 0
-  switch (model) {
-    case 'gpt4':
-      costPerWord = 0.0002
+export async function POST(request: Request) {
+  const { model, inputWordCount, outputWordCount, requestCount, timeFrame } = await request.json()
+
+  const costPerWord = modelPrices[model] || 0
+  const inputCost = inputWordCount * costPerWord
+  const outputCost = outputWordCount * costPerWord
+  const totalCostPerRequest = inputCost + outputCost
+
+  let multiplier = 1
+  switch (timeFrame) {
+    case 'week':
+      multiplier = 7
       break
-    case 'gemini-1.5-flash':
-      costPerWord = 0.0001
+    case 'month':
+      multiplier = 30
       break
-    case 'gemini-1.5-pro':
-      costPerWord = 0.00015
+    case 'year':
+      multiplier = 365
       break
-    default:
-      costPerWord = 0
   }
 
-  const inputCost = prompt.split(' ').length * costPerWord
-  const outputCost = outputLength * costPerWord
-  const totalCost = inputCost + outputCost
+  const totalCost = totalCostPerRequest * requestCount * multiplier
 
-  return NextResponse.json({ cost: totalCost })
+  const explanation = `The cost is calculated based on the ${model} model, which charges $${costPerWord.toFixed(6)} per word. 
+    For a prompt of ${inputWordCount} words and an expected output of ${outputWordCount} words, 
+    the cost per request is $${totalCostPerRequest.toFixed(4)}. 
+    With ${requestCount} requests per ${timeFrame}, the total cost is $${totalCost.toFixed(4)}.`
+
+  return NextResponse.json({ cost: totalCost, explanation })
 }
