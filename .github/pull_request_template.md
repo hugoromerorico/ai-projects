@@ -1,33 +1,57 @@
-Please go to the `Preview` tab if you want to use the modern template instead:
+### PR Summary
+> [CHANGE ME] _Provide a concise overview of the changes in this PR..._
 
-* [Use Modern Template](?expand=1&template=modern_pr_template.md)
+### Related JIRA Tickets
+> [CHANGE ME] _List relevant JIRA tickets the link is a nice to have_
+
+### How to Review This PR
+> [CHANGE ME] _Offer guidance for reviewers, such as key files to examine or specific tests to run..._
+
+### Does This PR Introduce Breaking Changes? (yes/no)
+> [CHANGE ME] _If yes, describe the impact and migration steps for other teams..._
+
+### Checklist
+#### General Checklist
+- [ ] Did you update the version?
+- [ ] Did you add/update the documentation?
+- [ ] Have you checked this change doesn't break any contract? If so, did you inform consumers?
+- [ ] Is it covered with Unit Tests?
+- [ ] Is it covered with Acceptance Tests?
+- [ ] Are there Prometheus metrics?
+- [ ] Did you update the Swagger documentation?
+- [ ] Are there no commented-out or debug code left? (If necessary, use `// FIXME` or `// TODO` with a follow-up task.)
 
 ---
 
-### What's the focus of this PR?
-…
+#### **K8s Component PRs**
+<details>
+<summary>Expand if this PR affects Kubernetes components (/components or /IA/components)</summary>
 
-### How to review this PR?
-…
+- [ ] Generated a new tag for the component
+  - Tag name: > [CHANGE ME] _Enter the new tag name (e.g., compoenent/v0.1.0-rc.1)_
+- [ ] Deployed the new tag to Kubernetes
+  - K8s PR: > [CHANGE ME] _Enter the PR link where the tag was deployed_
 
-### Related Issues
-…
+</details>
 
-### Has breaking changes?
-…
+---
 
-### Definition of Done
+#### **Infrastructure PRs**
+<details>
+<summary>Expand if this PR affects infrastructure (/infrastructure/terraform)</summary>
 
-- [ ] HAVE YOU INCREASED THE VERSION?
+- [ ] Have you added the `terraform plan` label?
+- [ ] After confirming the plan is correct, have you added the `terraform apply` label?
 
-- [ ] HAVE YOU CHECKED THIS CHANGE DOESN'T BREAK ANY CONTRACT? if so, DID YOU LET YOUR CONSUMERS KNOW?
+</details>
 
-- [ ] Is it covered with Unit Tests?
+---
 
-- [ ] Is it covered with Acceptance Tests?
+#### **Publishing Python Packages**
+<details>
+<summary>Expand if this PR affects a Python package (/python-packages)</summary>
 
-- [ ] Are there prometheus metrics?
+- [ ] Have you incremented the package version appropriately?
+- [ ] Have you added the `python publish` label?
 
-- [ ] Did you update the swagger & doc?
-
-- [ ] is there any no out-commented or debug code left? (if there is a good reason, use a // FIXME: comment or // TODO: comment and create a follow-up tasks)
+</details>
