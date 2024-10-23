@@ -1,0 +1,4 @@
+Pensando en una conversacion por turnos donde cada agente tiene un rol especifico.
+El triador es el que decide que agente debe hablar, le pasa todo el contexto y el agente debe responder.
+La respuesta se añade al contexto y el turno pasa al siguiente agente, si procede.
+Un agente aporta informacion relevante y en linea con su especialidad.
