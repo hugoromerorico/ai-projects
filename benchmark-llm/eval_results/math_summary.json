@@ -1,1 +1,1 @@
-{"math": {"corr": 1.0, "wrong": 2.0, "acc": 0.3333333333333333}, "total": {"corr": 1.0, "wrong": 2.0, "acc": 0.3333333333333333}}
+{"math": {"corr": 2.0, "wrong": 3.0, "acc": 0.4}, "total": {"corr": 2.0, "wrong": 3.0, "acc": 0.4}}

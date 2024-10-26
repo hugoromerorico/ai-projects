@@ -1,1 +1,1 @@
-{"economics": {"corr": 1.0, "wrong": 2.0, "acc": 0.3333333333333333}, "total": {"corr": 1.0, "wrong": 2.0, "acc": 0.3333333333333333}}
+{"economics": {"corr": 4.0, "wrong": 1.0, "acc": 0.8}, "total": {"corr": 4.0, "wrong": 1.0, "acc": 0.8}}

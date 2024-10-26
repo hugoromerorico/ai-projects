@@ -41,7 +41,7 @@ def get_client():
         ]
     ]
     client = GenerativeModel(
-        model_name="gemini-1.5-flash-002",
+        model_name="gemini-1.5-pro-002",
         safety_settings=safety_settings,
         generation_config=generation_config,
     )
@@ -195,7 +195,7 @@ def evaluate(subjects):
     global_total = 0
     
     for subject in subjects:
-        test_data = test_df[subject][:3]  # Limit to 5 rows
+        test_data = test_df[subject][:5]  # Limit to 5 rows
         output_res_path = os.path.join(args.output_dir, subject + "_result.json")
         output_summary_path = os.path.join(args.output_dir, subject + "_summary.json")
         res, category_record = update_result(output_res_path)
