@@ -19,7 +19,7 @@ import time
 from datasets import load_dataset
 import argparse
 
-vertexai.init(project="mm-cia-dev", location="europe-west1") 
+vertexai.init(project="mm-cia-dev", location="europe-west4") 
 
 def get_client():
     generation_config = {
@@ -41,7 +41,7 @@ def get_client():
         ]
     ]
     client = GenerativeModel(
-        model_name="gemini-1.5-flash-latest",
+        model_name="gemini-1.5-flash-002",
         safety_settings=safety_settings,
         generation_config=generation_config,
     )
@@ -190,8 +190,12 @@ def evaluate(subjects):
     if not subjects:
         subjects = list(test_df.keys())
     print("assigned subjects", subjects)
+    
+    global_correct = 0
+    global_total = 0
+    
     for subject in subjects:
-        test_data = test_df[subject][:5]  # Limit to 5 rows
+        test_data = test_df[subject][:3]  # Limit to 5 rows
         output_res_path = os.path.join(args.output_dir, subject + "_result.json")
         output_summary_path = os.path.join(args.output_dir, subject + "_summary.json")
         res, category_record = update_result(output_res_path)
@@ -200,6 +204,7 @@ def evaluate(subjects):
             label = each["answer"]
             category = subject
             pred, response, exist = single_request(client, each, dev_df, res)
+            # time.sleep(1)  # Add a 1-second delay between requests
             if response is not None:
                 res, category_record = update_result(output_res_path)
                 if category not in category_record:
@@ -219,8 +224,23 @@ def evaluate(subjects):
                 res, category_record = update_result(output_res_path)
         save_res(res, output_res_path)
         save_summary(category_record, output_summary_path)
-
-        print(f"Evaluating {len(test_data)} questions for subject: {subject}")
+        
+        # Update global statistics
+        global_correct += category_record["total"]["corr"]
+        global_total += category_record["total"]["corr"] + category_record["total"]["wrong"]
+    
+    # Calculate and save global accuracy
+    global_accuracy = global_correct / global_total if global_total > 0 else 0
+    global_summary = {
+        "total_correct": global_correct,
+        "total_questions": global_total,
+        "global_accuracy": global_accuracy
+    }
+    global_summary_path = os.path.join(args.output_dir, "global_summary.json")
+    with open(global_summary_path, "w") as fo:
+        json.dump(global_summary, fo, indent=2)
+    
+    print(f"Global Accuracy: {global_accuracy:.2%}")
 
 def save_res(res, output_res_path):
     temp = []
@@ -241,18 +261,21 @@ def save_summary(category_record, output_summary_path):
     for k, v in category_record.items():
         if k == "total":
             continue
-        cat_acc = v["corr"] / (v["corr"] + v["wrong"])
+        cat_acc = v["corr"] / (v["corr"] + v["wrong"]) if v["corr"] + v["wrong"] > 0 else 0
         category_record[k]["acc"] = cat_acc
         total_corr += v["corr"]
         total_wrong += v["wrong"]
-    acc = total_corr / (total_corr + total_wrong)
+    
+    # Handle the case when total_corr + total_wrong is zero
+    acc = total_corr / (total_corr + total_wrong) if total_corr + total_wrong > 0 else 0
     category_record["total"] = {"corr": total_corr, "wrong": total_wrong, "acc": acc}
+    
     with open(output_summary_path, "w") as fo:
         fo.write(json.dumps(category_record))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output_dir", "-o", type=str, default="eval_results/")
+    parser.add_argument("--output_dir", "-o", type=str, default="benchmark-llm/eval_results/")
     parser.add_argument("--assigned_subjects", "-a", type=str, default="all")
     assigned_subjects = []
     args = parser.parse_args()
