@@ -1,2 +1,33 @@
-model.safetensors
 consolidated.00.pth
+
+# ML Model files
+*.pt
+*.pth
+*.h5
+*.onnx
+*.safetensors
+*.bin
+*.ckpt
+*.model
+*.pb
+
+# Compressed files
+*.7z
+*.zip
+*.rar
+*.gz
+*.bz2
+*.xz
+*.zst
+*.tar
+*.tar.*
+*.tgz
+
+# Data files
+*.npy
+*.npz
+*.parquet
+*.arrow
+*.pickle
+*.pkl
+saved_model/
